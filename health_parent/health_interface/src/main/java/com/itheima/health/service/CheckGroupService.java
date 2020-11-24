@@ -13,6 +13,7 @@ import java.util.List;
  * '@date: 2020-11-23 10:22
  */
 public interface CheckGroupService {
+
     void add(CheckGroup checkItemIds, Integer[] checkGroup);
 
     PageResult<CheckGroup> findPage(QueryPageBean queryPageBean);

@@ -26,6 +26,11 @@ public class SetmealServiceImpl implements SetmealService {
     @Autowired
     private SetmealDao setmealDao;
 
+    /**
+     * 增加套餐，绑定关联检查组
+     * @param setmeal
+     * @param checkgroupIds
+     */
     @Override
     @Transactional
     public void add(Setmeal setmeal, Integer[] checkgroupIds) {
@@ -39,14 +44,26 @@ public class SetmealServiceImpl implements SetmealService {
         }
     }
 
+    /**
+     * 分页条件查询
+     * @param queryPageBean
+     * @return
+     */
     @Override
     public PageResult<Setmeal> findPage(QueryPageBean queryPageBean) {
+        //分页工具 PageHelper
         PageHelper.startPage(queryPageBean.getCurrentPage(), queryPageBean.getPageSize());
+
+        //字符串非空判断,拼接%模糊查询
         String queryString = queryPageBean.getQueryString();
         if (!StringUtil.isEmpty(queryString)) {
             queryPageBean.setQueryString("%" + queryString + "%");
         }
+
+        //通过字符串进行模糊查询
         Page<Setmeal> page = setmealDao.findCondition(queryPageBean.getQueryString());
+
+        // 封装到分页结果对象中
         return new PageResult<>(page.getTotal(), page.getResult());
     }
 
