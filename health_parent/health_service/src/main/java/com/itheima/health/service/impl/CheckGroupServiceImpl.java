@@ -86,4 +86,10 @@ public class CheckGroupServiceImpl implements CheckGroupService {
             checkGroupDao.deleteById(id);
         }
     }
+
+    @Override
+    public List<CheckGroup> findAll() {
+        List<CheckGroup> checkGroupList = checkGroupDao.findAll();
+        return checkGroupList;
+    }
 }
