@@ -54,7 +54,7 @@ public class SetmealServiceImpl implements SetmealService {
         //分页工具 PageHelper
         PageHelper.startPage(queryPageBean.getCurrentPage(), queryPageBean.getPageSize());
 
-        //字符串非空判断,拼接%模糊查询
+        //字符串非空判断，拼接"%"进行模糊查询
         String queryString = queryPageBean.getQueryString();
         if (!StringUtil.isEmpty(queryString)) {
             queryPageBean.setQueryString("%" + queryString + "%");
@@ -67,22 +67,42 @@ public class SetmealServiceImpl implements SetmealService {
         return new PageResult<>(page.getTotal(), page.getResult());
     }
 
+    /**
+     * 通过ID查询
+     * @param id
+     * @return
+     */
     @Override
     public Setmeal findById(int id) {
         Setmeal setmeal = setmealDao.findById(id);
         return setmeal;
     }
 
+    /**
+     * 通过套餐ID查询检查组ID集合
+     * @param id
+     * @return
+     */
     @Override
     public List<Integer> findCheckgroupIdsBySetmealId(int id) {
         List<Integer> checkGroupIds = setmealDao.findCheckgroupIdsBySetmealId(id);
         return checkGroupIds;
     }
 
+    /**
+     * 更新套餐
+     * @param setmeal
+     * @param checkGroupIds
+     */
     @Override
     public void update(Setmeal setmeal, Integer[] checkGroupIds) {
+        //1、更新套餐
         setmealDao.update(setmeal);
+
+        //2.1、获取套餐ID
         setmealDao.deleteSetmealCheckGroup(setmeal.getId());
+
+        //2.2、绑定套餐相关检查组
         if (checkGroupIds != null) {
             for (Integer checkGroupId : checkGroupIds) {
                 setmealDao.addSetmealCheckGroup(setmeal.getId(), checkGroupId);
@@ -90,13 +110,22 @@ public class SetmealServiceImpl implements SetmealService {
         }
     }
 
+    /**
+     * 通过ID删除套餐
+     * @param id
+     */
     @Override
     public void deleteById(Integer id) {
+        //判断是否有订单使用套餐
         int count = setmealDao.findOrderCountBySetmealId(id);
         if (count > 0) {
             throw new MyException("已有订单使用该套餐，不可删除");
         }
+
+        //删除套餐相关检查组关系
         setmealDao.deleteSetmealCheckGroup(id);
+
+        //通过ID删除套餐
         setmealDao.deleteSetmealById(id);
     }
 }

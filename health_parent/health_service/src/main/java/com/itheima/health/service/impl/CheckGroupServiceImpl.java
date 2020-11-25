@@ -32,21 +32,18 @@ public class CheckGroupServiceImpl implements CheckGroupService {
     @Override
     @Transactional
     public void add(CheckGroup checkGroup, Integer[] checkItemIds) {
-        /**
-         * 1、更新检查组表
-         */
+        //1、更新检查组表
         checkGroupDao.add(checkGroup);
         Integer checkGroupId = checkGroup.getId();
-        /**
-         * 2、检查组&检查项绑定
-         */
-        // 非空判断
+
+        //2、检查组&检查项绑定
         if (checkItemIds != null) {
             for (Integer checkItemId : checkItemIds) {
                 checkGroupDao.addCheckGroupCheckItem(checkGroupId, checkItemId);
             }
         }
     }
+
 
     /**
      * 分页条件查询
@@ -55,29 +52,23 @@ public class CheckGroupServiceImpl implements CheckGroupService {
      */
     @Override
     public PageResult<CheckGroup> findPage(QueryPageBean queryPageBean) {
-        /**
-         * 分页工具 PageHelper
-         */
+        //分页工具 PageHelper
         PageHelper.startPage(queryPageBean.getCurrentPage(), queryPageBean.getPageSize());
-        /**
-         * 条件非空判断，增加%占位符，方便dao模糊查询
-         */
+
+        //条件非空判断，增加%占位符，方便dao模糊查询
         if (!StringUtil.isEmpty(queryPageBean.getQueryString())) {
             queryPageBean.setQueryString("%" + queryPageBean.getQueryString() + "%");
         }
-        /**
-         * 返回Page
-         */
+
+        // 返回Page
         Page<CheckGroup> checkGroupPage = checkGroupDao.findByCondition(queryPageBean.getQueryString());
-        /**
-         * 封装到PageResult
-         */
+
+        //封装到PageResult
         return new PageResult<CheckGroup>(checkGroupPage.getTotal(), checkGroupPage.getResult());
     }
 
     /**
      * 通过ID查询
-     *
      * @param id
      * @return
      */
@@ -106,18 +97,13 @@ public class CheckGroupServiceImpl implements CheckGroupService {
     @Override
     @Transactional
     public void update(CheckGroup checkGroup, Integer[] checkItemIds) {
-        /**
-         * 1、更新检查组
-         */
+         // 1、更新检查组
         checkGroupDao.update(checkGroup);
 
-        /**
-         * 2、删除检查项旧关系
-         */
+         // 2、删除检查项旧关系
         checkGroupDao.deleteCheckGroupCheckItem(checkGroup.getId());
-        /**
-         * 3、绑定新的检查项关系
-         */
+
+         // 3、绑定新的检查项关系
         Integer checkGroupId = checkGroup.getId();
         if (checkItemIds != null) {
             for (Integer checkItemId : checkItemIds) {
@@ -133,9 +119,7 @@ public class CheckGroupServiceImpl implements CheckGroupService {
      */
     @Override
     public void deleteById(int id) throws MyException {
-        /**
-         * 查询关联的套餐数量进行判断
-         */
+         //查询关联的套餐数量进行判断
         int count = checkGroupDao.findSetmealCountByCheckGroupId(id);
         if (count > 0) {
             throw new MyException(MessageConstant.DELETE_CHECKGROUP_FAIL);

@@ -318,7 +318,7 @@
                         if(res.data.flag){
                             // 数据绑定
                             this.pagination.total = res.data.data.total;
-                            // 分页结果集
+                            // 绑定分页结果集
                             this.dataList = res.data.data.rows;
                         }else{
                             this.$message.error(res.data.message);
@@ -349,7 +349,7 @@
                 handleUpdate(row) {
                     this.resetForm();
                     this.dialogFormVisible4Edit = true;
-                    var id = row.id;// 检查组id
+                    var id = row.id;   // 检查组id
                     axios.get('/checkgroup/findById.do?id=' + id).then(res => {
                         if(res.data.flag){
                             // 检查组信息回显
