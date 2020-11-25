@@ -37,7 +37,6 @@ public class SetmealController {
      *      1、没有把图片数据存到数据库，而是云存储
      *      2、调用service层方法，会有数据传输，步骤冗余，影响响应性能
      */
-
     @RequestMapping("/upload")
     public Result updataImg(@RequestBody MultipartFile imgFile) {
         /**

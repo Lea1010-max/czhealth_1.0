@@ -134,7 +134,7 @@
                 days: [],
                 leftobj: []//用于装载页面显示的月份已经进行预约设置的数据
             },
-            created: function () { //在vue初始化时调用
+            created: function () {
                 this.initData(null); // 画日历
                 // 获取当前月份的数据 2020-12 2020-11
                 this.getDataByMonth();
@@ -160,7 +160,7 @@
                         inputErrorMessage: '只能输入正整数'
                     }).then(({ value }) => {
                         var number = value;
-                        var submitData = {orderDate,number}; // json数据orderDate变量名key, 变量的值为value es6
+                        var submitData = {orderDate,number}; // json数据orderDate变量名key, 变量的值为value es6语法
                         axios.post('/ordersetting/editNumberByDate.do',submitData).then(res => {
                             this.$message({
                                 message: res.data.message,
@@ -214,7 +214,7 @@
                     this.currentDay = date.getDate();
                     this.currentYear = date.getFullYear();
                     this.currentMonth = date.getMonth() + 1;
-                    this.currentWeek = date.getDay(); // //本月第一天是周几（周日0 周六 6）
+                    this.currentWeek = date.getDay(); //本月第一天是周几（周日0 周六 6）
                     var today = new Date();
                     this.LocalMonth = today.getMonth() + 1;
                     if (this.currentWeek == 0) {
@@ -235,7 +235,7 @@
                         }
                         else if (index != 0 && index < 3)
                             dayobject.index = index++;//从今天开始3天内显示供预定的数量
-                        this.days.push(dayobject);//将日期放入data 中的days数组 供页面渲染使用
+                        this.days.push(dayobject);//将日期放入data中的days数组 供页面渲染使用
                     }
                     var monthDays = 35;
                     if(this.currentMonth == 11){
@@ -282,7 +282,7 @@
 				//向后一个月
                 pickNext: function (year, month) {
                     var d = new Date(this.formatDate(year, month, 1));
-                    d.setDate(35);////获取指定天之后的日期
+                    d.setDate(35);//获取指定天之后的日期
                     this.initData(this.formatDate(d.getFullYear(), d.getMonth() + 1, 1));
                     this.getDataByMonth();
                 },

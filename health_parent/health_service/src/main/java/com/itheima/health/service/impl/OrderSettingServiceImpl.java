@@ -51,8 +51,14 @@ public class OrderSettingServiceImpl implements OrderSettingService {
         }
     }
 
+    /**
+     * 预约数据日历回显
+     * @param month
+     * @return
+     */
     @Override
     public List<Map<String, Integer>> getDataByMonth(String month) {
+        //根据年月模糊查询
         month+="%";
         return orderSettingDao.getDataByMonth(month);
     }

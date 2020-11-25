@@ -6,13 +6,12 @@ import com.itheima.health.entity.Result;
 import com.itheima.health.pojo.OrderSetting;
 import com.itheima.health.service.OrderSettingService;
 import com.itheima.health.utils.POIUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -65,10 +64,18 @@ public class OrderSettingController {
         }
     }
 
+    /**
+     * 预约数据日历回显
+     * @param month
+     * @return
+     */
     @GetMapping("/getDataByMonth")
-    public Result getDataByMonth(String month){
+    public Result getDataByMonth(String month) {
+        /**
+         *  前端数据格式：
+         *  this.leftobj = [{ date: 6, number: 120, reservations: 1 }]
+         */
         List<Map<String, Integer>> data = orderSettingService.getDataByMonth(month);
-        return new Result(true,MessageConstant.GET_ORDERSETTING_SUCCESS,data);
+        return new Result(true, MessageConstant.GET_ORDERSETTING_SUCCESS, data);
     }
-
 }
