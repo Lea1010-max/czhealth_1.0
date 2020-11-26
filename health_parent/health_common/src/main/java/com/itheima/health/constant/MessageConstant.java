@@ -68,4 +68,6 @@ public interface MessageConstant {
     static final String GET_SETMEAL_LIST_FAIL = "查询套餐列表数据失败";
     static final String DELETE_SETMEAL_SUCCESS = "删除套餐列表数据成功";
     static final String DELETE_SETMEAL_FAIL = "删除套餐列表数据失败";
+    static final String EDIT_ORDERSETTING_SUCCESS = "编辑当日预约成功";
+
 }

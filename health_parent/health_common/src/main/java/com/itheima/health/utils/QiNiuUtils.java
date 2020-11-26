@@ -23,12 +23,6 @@ public class QiNiuUtils {
     private static final String BUCKET = "lea1010";
     public static final String DOMAIN= "http://qkahn3wfa.hn-bkt.clouddn.com/";
 
-    public static void main(String[] args) {
-        uploadFile("C:\\Users\\Eric\\Desktop\\file\\timg.jpg","dd2.jpg");
-        //removeFiles("20190529083159.jpg","20190529083241.jpg");
-        //listFile();
-    }
-
     /**
      * 遍历7牛上的所有图片
      * @return
@@ -151,5 +145,4 @@ public class QiNiuUtils {
         // 创建操作某个仓库的管理器
         return new BucketManager(auth, new Configuration(Zone.zone2()));
     }
-
 }

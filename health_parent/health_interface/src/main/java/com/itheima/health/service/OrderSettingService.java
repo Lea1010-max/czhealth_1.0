@@ -15,4 +15,6 @@ public interface OrderSettingService {
     void uploadOrderSetting(List<OrderSetting> orderSettingList) throws MyException;
 
     List<Map<String, Integer>> getDataByMonth(String month);
+
+    void editNumberByDate(OrderSetting orderSetting);
 }

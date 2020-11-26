@@ -22,7 +22,28 @@ public class OrderSettingServiceImpl implements OrderSettingService {
     private OrderSettingDao orderSettingDao;
 
     /**
-     * 将数据组存到数据库
+     * 更新预约数
+     * @param orderSetting
+     */
+    public void updateOrderSetting(OrderSetting orderSetting){
+        //通过日期查询当日是否有数据
+        OrderSetting osInDB = orderSettingDao.findByOrderDate(orderSetting.getOrderDate());
+        //有数据
+        if (osInDB != null) {
+            //已预约数大于可预约数，抛出
+            if (osInDB.getReservations() > orderSetting.getNumber()) {
+                throw new MyException(orderSetting.getOrderDate() + "超过可预约数量");
+            }
+            //已预约数小于可预约数，更新
+            orderSettingDao.updateNumber(orderSetting);
+        } else {
+            //当日没数据，新增
+            orderSettingDao.add(orderSetting);
+        }
+    }
+
+    /**
+     * 读取Excel数据存到数据库
      * 1、通过日期，遍历查询数据库中当天是否有预约
      * 2、有预约=>判断数据中已预约数是否大于可预约数，大于则通过异常抛出
      * 3、没预约=>新增
@@ -34,21 +55,17 @@ public class OrderSettingServiceImpl implements OrderSettingService {
     public void uploadOrderSetting(List<OrderSetting> orderSettingList) {
 
         for (OrderSetting orderSetting : orderSettingList) {
-            //通过日期查询当日是否有数据
-            OrderSetting osInDB = orderSettingDao.findByOrderDate(orderSetting.getOrderDate());
-            //有数据
-            if (osInDB != null) {
-                //已预约数大于可预约数，抛出
-                if (osInDB.getReservations() > orderSetting.getNumber()) {
-                    throw new MyException(orderSetting.getOrderDate() + "超过可预约数量");
-                }
-                //已预约数大小于可预约数，更新
-                orderSettingDao.updateNumber(orderSetting);
-            } else {
-                //当日没数据，新增
-                orderSettingDao.add(orderSetting);
-            }
+           this.updateOrderSetting(orderSetting);
         }
+    }
+
+    /**
+     * 编辑当日预约
+     * @param orderSetting
+     */
+    @Override
+    public void editNumberByDate(OrderSetting orderSetting) {
+        this.updateOrderSetting(orderSetting);
     }
 
     /**

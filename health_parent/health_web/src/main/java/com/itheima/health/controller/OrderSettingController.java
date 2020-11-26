@@ -7,6 +7,7 @@ import com.itheima.health.pojo.OrderSetting;
 import com.itheima.health.service.OrderSettingService;
 import com.itheima.health.utils.POIUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -56,7 +57,7 @@ public class OrderSettingController {
             }
             //调用业务层方法
             orderSettingService.uploadOrderSetting(orderSettingList);
-            //返回数据
+            //返回结果
             return new Result(true, MessageConstant.IMPORT_ORDERSETTING_SUCCESS);
         } catch (Exception e) {
             e.printStackTrace();
@@ -77,5 +78,11 @@ public class OrderSettingController {
          */
         List<Map<String, Integer>> data = orderSettingService.getDataByMonth(month);
         return new Result(true, MessageConstant.GET_ORDERSETTING_SUCCESS, data);
+    }
+
+    @RequestMapping("/editNumberByDate")
+    public Result editNumberByDate(@RequestBody OrderSetting orderSetting){
+        orderSettingService.editNumberByDate(orderSetting);
+        return new Result(true, MessageConstant.ORDERSETTING_SUCCESS);
     }
 }
