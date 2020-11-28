@@ -80,6 +80,11 @@ public class OrderSettingController {
         return new Result(true, MessageConstant.GET_ORDERSETTING_SUCCESS, data);
     }
 
+    /**
+     * 当日预约设置
+     * @param orderSetting
+     * @return
+     */
     @RequestMapping("/editNumberByDate")
     public Result editNumberByDate(@RequestBody OrderSetting orderSetting){
         orderSettingService.editNumberByDate(orderSetting);

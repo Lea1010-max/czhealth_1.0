@@ -6,6 +6,7 @@ import java.util.List;
 /**
  * 检查组
  */
+
 public class CheckGroup implements Serializable {
     private Integer id;//主键
     private String code;//编码
@@ -15,14 +16,6 @@ public class CheckGroup implements Serializable {
     private String remark;//介绍
     private String attention;//注意事项
     private List<CheckItem> checkItems;//一个检查组合包含多个检查项
-
-    public List<CheckItem> getCheckItems() {
-        return checkItems;
-    }
-
-    public void setCheckItems(List<CheckItem> checkItems) {
-        this.checkItems = checkItems;
-    }
 
     public Integer getId() {
         return id;
@@ -78,5 +71,13 @@ public class CheckGroup implements Serializable {
 
     public void setAttention(String attention) {
         this.attention = attention;
+    }
+
+    public List<CheckItem> getCheckItems() {
+        return checkItems;
+    }
+
+    public void setCheckItems(List<CheckItem> checkItems) {
+        this.checkItems = checkItems;
     }
 }

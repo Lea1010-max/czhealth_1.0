@@ -27,4 +27,8 @@ public interface SetmealService {
     void deleteById(Integer id) throws MyException;
 
     List<String> findImgs();
+
+    List<Setmeal> getSetmeal();
+
+    Setmeal findDetailById(int id);
 }

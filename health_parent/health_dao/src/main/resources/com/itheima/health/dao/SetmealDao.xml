@@ -15,13 +15,13 @@
     <insert id="addSetmealCheckGroup" parameterType="int">
         insert into t_setmeal_checkgroup(setmeal_id,checkgroup_id) values (#{setmealId},#{checkgroupId})
     </insert>
-    
+
     <select id="findCondition" parameterType="string" resultType="Setmeal">
         select * from t_setmeal
 
-            <if test="queryString != null and queryString.length>0">
-                where code like #{queryString} or name like #{queryString} or helpCode like #{queryString}
-            </if>
+        <if test="queryString != null and queryString.length>0">
+            where code like #{queryString} or name like #{queryString} or helpCode like #{queryString}
+        </if>
     </select>
 
     <select id="findById" parameterType="int" resultType="Setmeal">
@@ -59,7 +59,41 @@
         delete from t_setmeal where id=#{id}
     </delete>
 
-    <select id="findImgs" resultType="String">
-       select img from t_setmeal
+    <select id="findImgs" resultType="string">
+       select img DBImgs from t_setmeal
     </select>
+
+    <select id="getSetmeal" resultType="Setmeal">
+       select * from t_setmeal
+    </select>
+
+    <select id="findDetailById" parameterType="int" resultMap="setmealDetailResultMap">
+        select
+        s.id,s.name,s.age,s.sex,s.remark,s.img,
+        sc.checkgroup_id,g.name checkgroup_name,g.remark checkgroup_remark,
+        cc.checkitem_id,ci.name checkitem_name
+        from t_setmeal s
+        left join t_setmeal_checkgroup sc on s.id=sc.setmeal_id
+        left join t_checkgroup g on sc.checkgroup_id=g.id
+        left join t_checkgroup_checkitem cc on g.id=cc.checkgroup_id
+        left join t_checkitem ci on cc.checkitem_id=ci.id
+        where s.id=#{id}
+    </select>
+    <resultMap id="setmealDetailResultMap" type="Setmeal">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="sex" column="sex"/>
+        <result property="age" column="age"/>
+        <result property="remark" column="remark"/>
+        <result property="img" column="img"/>
+        <collection property="checkGroups" ofType="CheckGroup">
+            <id property="id" column="checkgroup_id"/>
+            <result property="name" column="checkgroup_name"/>
+            <result property="remark" column="checkgroup_remark"/>
+            <collection property="checkItems" ofType="CheckItem">
+                <id property="id" column="checkitem_id"/>
+                <result property="name" column="checkitem_name"/>
+            </collection>
+        </collection>
+    </resultMap>
 </mapper>

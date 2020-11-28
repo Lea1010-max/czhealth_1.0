@@ -129,9 +129,32 @@ public class SetmealServiceImpl implements SetmealService {
         setmealDao.deleteSetmealById(id);
     }
 
+    /**
+     * 查询仓库图片列表
+     * @return
+     */
     @Override
     public List<String> findImgs() {
         List<String> imgsList = setmealDao.findImgs();
         return imgsList;
+    }
+
+    /**
+     * 查询所有套餐
+     * @return
+     */
+    @Override
+    public List<Setmeal> getSetmeal() {
+        return setmealDao.getSetmeal();
+    }
+
+    /**
+     * 查询套餐详情
+     * @param id
+     * @return
+     */
+    @Override
+    public Setmeal findDetailById(int id) {
+        return setmealDao.findDetailById(id);
     }
 }
