@@ -18,6 +18,7 @@
         <script src="../plugins/vue/axios-0.18.0.js"></script>
         <script src="../plugins/elementui/index.js"></script>
         <script>
+            // 套餐id
             var id = getUrlParam("id");
         </script>
     </head>
@@ -33,12 +34,15 @@
             <div class="contentBox">
                 <div class="card">
                     <div class="">
-                        <img :src="'http://pqjroc654.bkt.clouddn.com/'+setmeal.img" width="100%" height="100%" />
+                        <img :src="setmeal.img" width="100%" height="100%" />
                     </div>
                     <div class="project-text">
                         <h4 class="tit">{{setmeal.name}}</h4>
                         <p class="subtit">{{setmeal.remark}}</p>
-                        <p class="keywords"><span>女</span><span>20-70</span></p>
+                        <p class="keywords">
+                            <span>{{setmeal.sex == '0' ? '性别不限' : setmeal.sex == '1' ? '男':'女'}}</span>
+                            <span>{{setmeal.age}}</span>
+                        </p>
                     </div>
                     <div class="project-know">
                         <a href="orderNotice.html" class="link-page">
@@ -102,10 +106,11 @@
                 el:'#app',
                 data:{
                     setmeal:{},//套餐信息
+                    //预约信息
                     orderInfo:{
-                        setmealId:id,
+                        setmealId: id, // 套餐id
                         sex:'1'
-                    }//预约信息
+                    }
                 },
                 methods:{
                     //发送验证码
@@ -117,13 +122,17 @@
                             this.$message.error('请输入正确的手机号');
                             return false;
                         }
+                        // $:jquery ("#validateCodeButton") #id选择器, html文档document,允许同一个id给多个元素
+                        // 发送验证码的按钮
                         validateCodeButton = $("#validateCodeButton")[0];
-                        clock = window.setInterval(doLoop, 1000); //一秒执行一次
-                        axios.post("/validateCode/send4Order.do?telephone=" + telephone).then((response) => {
-                            if(!response.data.flag){
-                                //验证码发送失败
-                                this.$message.error('验证码发送失败，请检查手机号输入是否正确');
-                            }
+                        // 定时器
+                        clock = window.setInterval(doLoop, 1000); //一秒执行一次doLoop 异步
+                        // 请求发送验证码
+                        axios.post("/validateCode/send4Order.do?telephone=" + telephone).then((res) => {
+                            this.$message({
+                                message: res.data.message,
+                                type: res.data.flag?"success":"error"
+                            })
                         });
                     },
                     //提交预约
@@ -136,7 +145,14 @@
                         axios.post("/order/submit.do",this.orderInfo).then((response) => {
                             if(response.data.flag){
                                 //预约成功，跳转到预约成功页面
-                                window.location.href="orderSuccess.html?orderId=" + response.data.data.id;
+                                /**
+                                 * Result{
+                                 *     flag
+                                 *     message
+                                 *     data: id
+                                 * }
+                                 */
+                                window.location.href="orderSuccess.html?orderId=" + response.data.data;
                             }else{
                                 //预约失败，提示预约失败信息
                                 this.$message.error(response.data.message);
@@ -145,8 +161,12 @@
                     }
                 },
                 mounted(){
-                    axios.post("/setmeal/findById.do?id=" + id).then((response) => {
-                        this.setmeal = response.data.data;
+                    axios.get("/setmeal/findById.do?id=" + id).then((res) => {
+                        if(res.data.flag){
+                            this.setmeal = res.data.data;
+                        }else{
+                            this.$message.error(res.data.message);
+                        }
                     });
                 }
             });

@@ -16,15 +16,14 @@ public class SMSUtils {
 	public static final String VALIDATE_CODE = "SMS_189616640";//发送短信验证码模板编码  模版CODE
 	private static final String SIGN_NAEM = "黑马程序员";// 短信的签名
 	private static final String PARAMETER_NAME="code";
-	private static final String ACCESS_KEY="XXXX"; //你的AccessKey ID
-	private static final String SECRET_KEY="xxxx"; //你的AccessKey Secret
+	private static final String ACCESS_KEY="xxx"; //你的AccessKey ID
+	private static final String SECRET_KEY="xxx"; //你的AccessKey Secret
 
 	public static void main(String[] args) throws ClientException {
 		SMSUtils.sendShortMessage(VALIDATE_CODE,"13652431027","666666");
 	}
 
 	/**
-	 *
 	 * @param templateCode
 	 * @param phoneNumbers
 	 * @param param
@@ -37,9 +36,6 @@ public class SMSUtils {
 		// 初始化ascClient需要的几个参数
 		final String product = "Dysmsapi";// 短信API产品名称（短信产品名固定，无需修改）
 		final String domain = "dysmsapi.aliyuncs.com";// 短信API产品域名（接口地址固定，无需修改）
-		// 替换成你的AK
-		final String accessKeyId = "LTAIak3CfAehK7cE";// 你的accessKeyId,参考本文档步骤2
-		final String accessKeySecret = "zsykwhTIFa48f8fFdU06GOKjHWHel4";// 你的accessKeySecret，参考本文档步骤2
 		// 初始化ascClient,暂时不支持多region（请勿修改）
 		IClientProfile profile = DefaultProfile.getProfile("cn-hangzhou", ACCESS_KEY, SECRET_KEY);
 		DefaultProfile.addEndpoint("cn-hangzhou", "cn-hangzhou", product, domain);
