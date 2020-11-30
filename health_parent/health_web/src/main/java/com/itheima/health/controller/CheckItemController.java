@@ -5,9 +5,9 @@ import com.itheima.health.constant.MessageConstant;
 import com.itheima.health.entity.PageResult;
 import com.itheima.health.entity.QueryPageBean;
 import com.itheima.health.entity.Result;
-import com.itheima.health.exception.MyException;
 import com.itheima.health.service.CheckItemService;
 import com.itheima.health.pojo.CheckItem;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,6 +40,7 @@ public class CheckItemController {
      * 增加检查项
      */
     @RequestMapping("/add")
+    @PreAuthorize("hasAuthority('CHECKITEM_ADD')")
     public Result add(@RequestBody CheckItem checkItem) {
         checkItemService.add(checkItem);
         return new Result(true, MessageConstant.ADD_CHECKITEM_SUCCESS);
@@ -49,6 +50,7 @@ public class CheckItemController {
      * 分页条件查询
      */
     @RequestMapping("/findPage")
+    @PreAuthorize("hasAuthority('CHECKITEM_QUERY')")
     public Result findPage(@RequestBody QueryPageBean queryPageBean) {
         PageResult<CheckItem> pageResult = checkItemService.findPage(queryPageBean);
         return new Result(true, MessageConstant.QUERY_CHECKITEM_SUCCESS, pageResult);
