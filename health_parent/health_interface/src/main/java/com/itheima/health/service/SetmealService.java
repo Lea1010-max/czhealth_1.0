@@ -6,6 +6,7 @@ import com.itheima.health.exception.MyException;
 import com.itheima.health.pojo.Setmeal;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * '@author: Lea
@@ -31,4 +32,7 @@ public interface SetmealService {
     List<Setmeal> getSetmeal();
 
     Setmeal findDetailById(int id);
+
+    List<Map<String, Object>> getSetmealReport();
+
 }
